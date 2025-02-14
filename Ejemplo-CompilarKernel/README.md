@@ -1,8 +1,11 @@
 # Compilación de un Kernel de Linux
+## 0. Sistema Operativo
+[Descarga de Linux Mint 22](https://www.linuxmint.com/edition.php?id=316) (Version compatible con linux kernel 6.8)
 
 ## 1. Extraer el código fuente del kernel  
-Descarga y extrae el código fuente del kernel de Linux:  
+[Descargar Kernel de Linux](https://www.kernel.org) (Descargar version 6.8)
 
+Extrae el código fuente del kernel de Linux:
 ```sh
 tar -xvf linux-6.8.tar.xz
 ```
