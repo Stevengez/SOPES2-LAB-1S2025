@@ -34,6 +34,12 @@ Ejecuta la compilación utilizando `fakeroot` y habilita el uso de 4 núcleos pa
 fakeroot make -j4
 ```
 
+## 5. Instalar Kernel
+```sh
+sudo make modules_install
+sudo make install
+```
+
 ## Notas  
 - Asegúrate de estar en el directorio correcto antes de ejecutar los comandos.  
 - Puedes ajustar `-j4` según la cantidad de núcleos de tu CPU para optimizar el rendimiento.  
