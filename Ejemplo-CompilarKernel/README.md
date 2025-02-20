@@ -17,7 +17,13 @@ Asegúrate de instalar los paquetes esenciales para la compilación del kernel:
 sudo apt -y install build-essential libncurses-dev bison flex libssl-dev libelf-dev fakeroot
 ```
 
-## 3. Configurar el kernel  
+## 3. Configurar el kernel 
+
+Generar configuracion basada en el kernel actual
+```sh
+make localmodconfig
+```
+
 Desactiva las claves de confianza del sistema para evitar problemas con la firma de módulos:  
 
 ```sh
