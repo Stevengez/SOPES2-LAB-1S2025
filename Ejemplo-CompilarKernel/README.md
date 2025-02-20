@@ -23,6 +23,8 @@ Generar configuracion basada en el kernel actual
 ```sh
 make localmodconfig
 ```
+Nota: Es posible que durante la creacion del archivo .config, aparezcan opciones de agregar nuevos modulos/drivers que no estan presentes en la configuracion actual del sistema, la opcion segura es usar "N" para no agregar nueva configuracion.
+
 
 Desactiva las claves de confianza del sistema para evitar problemas con la firma de módulos:  
 
