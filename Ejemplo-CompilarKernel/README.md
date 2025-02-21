@@ -122,5 +122,6 @@ Y reiniciamos.
 ## Notas  
 - Asegúrate de estar en el directorio correcto antes de ejecutar los comandos.  
 - Puedes ajustar `-j4` según la cantidad de núcleos de tu CPU para optimizar el rendimiento.  
-- La compilación puede tardar varios minutos o incluso horas dependiendo del hardware.  
+- La compilación puede tardar varios minutos o incluso horas dependiendo del hardware.
+- Para mantener las cosas simples, copia y guarda el .config generado con el kernel original de Linux Mint y usalo para compilaciones posteriores
 
