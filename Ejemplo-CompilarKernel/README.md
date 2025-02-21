@@ -48,6 +48,77 @@ sudo make modules_install
 sudo make install
 ```
 
+## 6. Cambiar Kernel por defecto
+Una vez compilado e instalado el kernel, es posible que este no sea la opcion por defecto para iniciar el sistema, hay varias formas de cambiar esto:
+
+### Opcion 1. Habilitar el menu de inicio
+Usa tu editor favorito para editar /etc/default/grub y cambia el archivo para que se vea asi
+```shell
+
+# If you change this file, run 'update-grub' afterwards to update
+# /boot/grub/grub.cfg.
+# For full documentation of the options in this file, see:
+#   info -f grub -n 'Simple configuration'
+
+GRUB_DEFAULT=saved
+GRUB_TIMEOUT_STYLE=menu
+GRUB_TIMEOUT=10
+GRUB_SAVEDEFAULT=true
+GRUB_DISTRIBUTOR=`( . /etc/os-release; echo ${NAME:-Ubuntu} ) 2>/dev/null || echo Ubuntu`
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+GRUB_CMDLINE_LINUX=""
+```
+
+Una vez guardados los cambios, hacemos
+```sh
+sudo update-grub
+```
+Y reiniciamos.
+
+### Opcion 2. Cambiar opcion por defecto
+Usa tu editor favorito para editar 
+
+Usa el siguiente comando para obtener las opciones del menu disponibles
+```sh
+sudo grep menuentry /boot/grub/grub.cfg
+```
+
+Veras algo como esto:
+```sh
+menuentry 'Linux Mint 22 Cinnamon' --class linuxmint --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-simple-00f49a3a-c03b-4fe6-94a9-11d1df4dd3db' {
+submenu 'Advanced options for Linux Mint 22 Cinnamon' $menuentry_id_option 'gnulinux-advanced-00f49a3a-c03b-4fe6-94a9-11d1df4dd3db' {
+        menuentry 'Linux Mint 22 Cinnamon, with Linux 6.8.0-steven-jocol-201602938' --class linuxmint --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-6.8.0-steven-jocol-201602938-advanced-00f49a3a-c03b-4fe6-94a9-11d1df4dd3db' {
+        menuentry 'Linux Mint 22 Cinnamon, with Linux 6.8.0-steven-jocol-201602938 (recovery mode)' --class linuxmint --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-6.8.0-steven-jocol-201602938-recovery-00f49a3a-c03b-4fe6-94a9-11d1df4dd3db' {
+        menuentry 'Linux Mint 22 Cinnamon, with Linux 6.8.0-steven-gomez-201602938' --class linuxmint --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-6.8.0-steven-gomez-201602938-advanced-00f49a3a-c03b-4fe6-94a9-11d1df4dd3db' {
+        menuentry 'Linux Mint 22 Cinnamon, with Linux 6.8.0-steven-gomez-201602938 (recovery mode)' --class linuxmint --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-6.8.0-steven-gomez-201602938-recovery-00f49a3a-c03b-4fe6-94a9-11d1df4dd3db' {
+        menuentry 'Linux Mint 22 Cinnamon, with Linux 6.8.0-38-generic' --class linuxmint --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-6.8.0-38-generic-advanced-00f49a3a-c03b-4fe6-94a9-11d1df4dd3db' {
+        menuentry 'Linux Mint 22 Cinnamon, with Linux 6.8.0-38-generic (recovery mode)' --class linuxmint --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-6.8.0-38-generic-recovery-00f49a3a-c03b-4fe6-94a9-11d1df4dd3db' {
+        menuentry 'Linux Mint 22 Cinnamon, with Linux 6.8.0steven-jocol-201602938' --class linuxmint --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-6.8.0steven-jocol-201602938-advanced-00f49a3a-c03b-4fe6-94a9-11d1df4dd3db' {
+        menuentry 'Linux Mint 22 Cinnamon, with Linux 6.8.0steven-jocol-201602938 (recovery mode)' --class linuxmint --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-6.8.0steven-jocol-201602938-recovery-00f49a3a-c03b-4fe6-94a9-11d1df4dd3db' {
+                menuentry 'UEFI Firmware Settings' $menuentry_id_option 'uefi-firmware' {
+```
+
+La parte que nos interesa es la cadena que acompaña la palabra ```submenu``` que en este caso es: ```Advanced options for Linux Mint 22 Cinnamon``` y tambien la cadena que acompañ al ```menuentry``` que nos interesa, por ejemplo, ```Linux Mint 22 Cinnamon, with Linux 6.8.0-steven-gomez-201602938```
+
+Unimos estas dos cadenas con un ">" como separador y obtenemos: ```"Advanced options for Linux Mint 22 Cinnamo>Linux Mint 22 Cinnamon, with Linux 6.8.0-steven-gomez-201602938"```
+Usamos esta cadena para GRUB_DEFAULT y guardamos
+
+```sh
+GRUB_DEFAULT="Advanced options for Linux Mint 22 Cinnamo>Linux Mint 22 Cinnamon, with Linux 6.8.0-steven-gomez-201602938"
+GRUB_TIMEOUT_STYLE=hidden
+GRUB_TIMEOUT=0
+GRUB_DISTRIBUTOR=`( . /etc/os-release; echo ${NAME:-Ubuntu} ) 2>/dev/null || echo Ubuntu`
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+GRUB_CMDLINE_LINUX=""
+GRUB_SAVEDEFAULT=true
+```
+
+Una vez guardados los cambios, hacemos
+```sh
+sudo update-grub
+```
+Y reiniciamos.
+
 ## Notas  
 - Asegúrate de estar en el directorio correcto antes de ejecutar los comandos.  
 - Puedes ajustar `-j4` según la cantidad de núcleos de tu CPU para optimizar el rendimiento.  
